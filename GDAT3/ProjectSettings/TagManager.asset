@@ -11,12 +11,12 @@ TagManager:
   - whatIsGround
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Roof
+  - Obstacle
+  - Door
+  - Enemy
+  - Key
   - 
   - 
   - 
