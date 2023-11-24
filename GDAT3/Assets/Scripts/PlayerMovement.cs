@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    AudioSource Footsteps;
+
     [Header("Movement")]
     public float moveSpeed;
 
@@ -27,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        Footsteps = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -59,7 +62,14 @@ public class PlayerMovement : MonoBehaviour
     {
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
+        if (moveDirection == Vector3.zero && Footsteps.isPlaying)
+        {
+            // stop playing
+        }
+        else if (Footsteps.isPlaying == false)
+        {
+            // start playing
+        }
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
     }
 
