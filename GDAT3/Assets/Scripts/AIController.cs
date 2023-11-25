@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
 public class AIController : MonoBehaviour
 {
+    Animator EnemyController; 
+
     public NavMeshAgent navMeshAgent;               //  Nav mesh agent component
     public float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 2;                  //  Wait time when the enemy detect near the player without seeing
@@ -34,6 +37,7 @@ public class AIController : MonoBehaviour
 
     void Start()
     {
+        EnemyController = GetComponent<Animator>();
         m_PlayerPosition = Vector3.zero;
         m_IsPatrol = true;
         m_CaughtPlayer = false;
@@ -57,10 +61,12 @@ public class AIController : MonoBehaviour
         if (!m_IsPatrol)
         {
             Chasing();
+            EnemyController.SetBool("IsRunning", true);
         }
         else
         {
             Patroling();
+            EnemyController.SetBool("IsRunning", false);
         }
     }
 
@@ -152,6 +158,7 @@ public class AIController : MonoBehaviour
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.speed = 0;
+        EnemyController.SetBool("Idle", true);
     }
 
     void Move(float speed)
