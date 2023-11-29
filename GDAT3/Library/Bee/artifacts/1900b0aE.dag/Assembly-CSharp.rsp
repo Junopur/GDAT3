@@ -369,6 +369,7 @@
 "Assets/Scripts/MurderScript.cs"
 "Assets/Scripts/PlayerCam.cs"
 "Assets/Scripts/PlayerMovement.cs"
+"Assets/Scripts/PlayerStun.cs"
 "Assets/Scripts/SceneLoader.cs"
 "Assets/Scripts/StartButton.cs"
 -langversion:9.0

@@ -7,7 +7,7 @@ public class KeyController : MonoBehaviour
     AudioSource Pickup;
     Collider Key;
 
-    public int totalKeys = 0;
+    public static int totalKeys = 0;
 
     private void Awake()
     {

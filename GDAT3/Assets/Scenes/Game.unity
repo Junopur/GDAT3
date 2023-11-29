@@ -2248,7 +2248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fcd67d6edd273a4092988e96c0ebaef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalKeys: 0
 --- !u!54 &228493615
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2288,9 +2287,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3621dd9ed1f28ee408e615ad70d6c652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 20
   groundDrag: 2
-  playerHeight: 0
+  playerHeight: 2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
@@ -6839,6 +6838,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 6
   m_Name: PlayerCam
   m_TagString: MainCamera
@@ -6936,6 +6936,18 @@ MonoBehaviour:
   sensX: 600
   sensY: 600
   orientation: {fileID: 613333785}
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da519325cd7fed142a1f9bc121bd99b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &986488475
 GameObject:
   m_ObjectHideFlags: 0
@@ -12128,6 +12140,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 10dc5d1f85d309647973296e1c0c1d41, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 947910388352438074, guid: 10dc5d1f85d309647973296e1c0c1d41, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -12245,8 +12261,8 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 10dc5d1f85d309647973296e1c0c1d41, type: 3}
   m_Controller: {fileID: 9100000, guid: 9c7c23625cc29cd4ab5ea5d2f91ac1e5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 1
+  m_CullingMode: 1
+  m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
