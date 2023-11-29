@@ -2287,7 +2287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3621dd9ed1f28ee408e615ad70d6c652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
+  moveSpeed: 10
   groundDrag: 2
   playerHeight: 2
   whatIsGround:
@@ -12142,7 +12142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 10dc5d1f85d309647973296e1c0c1d41, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 947910388352438074, guid: 10dc5d1f85d309647973296e1c0c1d41, type: 3}
       propertyPath: m_Layer
@@ -12262,7 +12262,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: 10dc5d1f85d309647973296e1c0c1d41, type: 3}
   m_Controller: {fileID: 9100000, guid: 9c7c23625cc29cd4ab5ea5d2f91ac1e5, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
