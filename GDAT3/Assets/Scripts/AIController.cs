@@ -34,6 +34,9 @@ public class AIController : MonoBehaviour
     bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
     bool m_CaughtPlayer;                            //  if the enemy has caught the player
 
+    public bool IsStunned => m_stunTimer > 0f;
+    float m_stunTimer = 0f;
+
     void Start()
     {
         m_Animator = gameObject.GetComponent<Animator>();
@@ -55,6 +58,13 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
+        // if the enemy is stunned, do stunned behavior and return
+        if (IsStunned)
+        {
+            Stunned();
+            return;
+        }
+        
         EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
         if (!m_IsPatrol)
@@ -65,6 +75,29 @@ public class AIController : MonoBehaviour
         else
         {
             Patroling();
+        }
+    }
+
+    public void DoStun(float duration)
+    {
+        Debug.Log($"Stunning enemy for {duration} seconds");
+        Stop();
+        m_stunTimer = duration;
+    }
+
+    private void Stunned()
+    {
+        m_stunTimer -= Time.deltaTime;
+        
+        if (m_stunTimer <= 0f)
+        {
+            Debug.Log("Stun ended");
+            m_IsPatrol = true;
+            m_CaughtPlayer = false;
+            m_playerInRange = false;
+            m_PlayerNear = false;
+            m_Animator.SetTrigger("IsIdle");
+            Move(speedWalk);
         }
     }
 

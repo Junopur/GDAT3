@@ -6,8 +6,8 @@ using UnityEngine.Serialization;
 
 public class PlayerStun : MonoBehaviour
 {
-    [SerializeField]
-    private LayerMask enemyLayerMask; // Layers to fire the ray on
+    [SerializeField] private LayerMask enemyLayerMask; // Layers to fire the ray on
+    [SerializeField] private float stunDuration = 5f; // Time to stun for.
     private Camera _camera; // Initialized in awake because Camera.main is expensive
     private void Awake()
     {
@@ -27,9 +27,12 @@ public class PlayerStun : MonoBehaviour
     /// </summary>
     private void StunBlast()
     {
-        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        const int RAY_DISTANCE = 10;
         
-        if (Physics.Raycast(ray, out RaycastHit hit, 10, enemyLayerMask, QueryTriggerInteraction.Collide))
+        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        Debug.DrawLine(ray.origin, ray.origin + ray.direction * RAY_DISTANCE, Color.red, 10, false);
+        
+        if (Physics.Raycast(ray, out RaycastHit hit, RAY_DISTANCE, enemyLayerMask, QueryTriggerInteraction.Collide))
         {
             Debug.DrawLine(ray.origin, hit.point, Color.green, 10, false);
             Debug.Log($"Hit: {hit.transform.name}");
@@ -37,7 +40,10 @@ public class PlayerStun : MonoBehaviour
             if (hit.transform.CompareTag("Enemy"))
             {
                 Debug.Log("Enemy Is Hit");
-                hit.transform.GetComponent<NavMeshAgent>().isStopped = true;
+                
+                var enemy = hit.transform.GetComponent<AIController>();
+                enemy.DoStun(stunDuration);
+
             }
             else
             {
