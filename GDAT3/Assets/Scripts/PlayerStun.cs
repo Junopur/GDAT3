@@ -5,25 +5,41 @@ using UnityEngine.AI;
 
 public class PlayerStun : MonoBehaviour
 {
+    private Camera _camera; // Initialized in awake because Camera.main is expensive
+    private void Awake()
+    {
+        _camera = Camera.main;
+    }
+    
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
-            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 10))
+            StunBlast();
+        }
+    }
+    
+    private void StunBlast()
+    {
+        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 10, 10))
+        {
+            Debug.DrawLine(ray.origin, hit.point, Color.green, 10, false);
+            
+            if (hit.transform.CompareTag("Enemy"))
             {
-                Debug.DrawLine(ray.origin, hit.point, Color.green, 10, false);
-                if (hit.transform.CompareTag("Enemy"))
-                {
-                    hit.transform.GetComponent<NavMeshAgent>().isStopped = true;
-                    Debug.Log("Enemy Is Hit");
-                }
-                else
-                {
-                    Debug.Log("Enemy Not Hit");
-                }
+                Debug.Log("Enemy Is Hit");
+                hit.transform.GetComponent<NavMeshAgent>().isStopped = true;
             }
+            else
+            {
+                Debug.Log("Something was hit, but not the enemy");
+            }
+        }
+        else
+        {
+            Debug.Log("Nothing was hit.");
         }
     }
 }
