@@ -12,7 +12,7 @@ public class AIController : MonoBehaviour
     public float speedWalk = 6;                     //  Walking speed, speed in the nav mesh agent
     public float speedRun = 9;                      //  Running speed
 
-    public float viewRadius = 15;                   //  Radius of the enemy view
+    public float viewRadius = 30;                   //  Radius of the enemy view
     public float viewAngle = 90;                    //  Angle of the enemy view
     public LayerMask playerMask;                    //  To detect the player with the raycast
     public LayerMask obstacleMask;                  //  To detect the obstacules with the raycast
@@ -88,6 +88,7 @@ public class AIController : MonoBehaviour
     private void Stunned()
     {
         m_stunTimer -= Time.deltaTime;
+        m_Animator.SetTrigger("IsStunned");
         
         if (m_stunTimer <= 0f)
         {
@@ -96,7 +97,6 @@ public class AIController : MonoBehaviour
             m_CaughtPlayer = false;
             m_playerInRange = false;
             m_PlayerNear = false;
-            m_Animator.SetTrigger("IsIdle");
             Move(speedWalk);
         }
     }
@@ -130,6 +130,7 @@ public class AIController : MonoBehaviour
                     //  Wait if the current position is not the player position
                     Stop();
                 m_WaitTime -= Time.deltaTime;
+                m_Animator.SetTrigger("IsIdle");
             }
         }
     }
@@ -149,6 +150,7 @@ public class AIController : MonoBehaviour
                 //  The enemy wait for a moment and then go to the last player position
                 Stop();
                 m_TimeToRotate -= Time.deltaTime;
+                m_Animator.SetTrigger("IsIdle");
             }
         }
         else
@@ -169,6 +171,7 @@ public class AIController : MonoBehaviour
                 {
                     Stop();
                     m_WaitTime -= Time.deltaTime;
+                    m_Animator.SetTrigger("IsIdle");
                 }
             }
         }
@@ -189,7 +192,7 @@ public class AIController : MonoBehaviour
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.speed = 0;
-        m_Animator.SetTrigger("IsIdle");
+        m_Animator.SetTrigger("IsStunned");
     }
 
     void Move(float speed)
@@ -276,6 +279,7 @@ public class AIController : MonoBehaviour
             {
                 Move(speedRun);
                 navMeshAgent.SetDestination(m_PlayerPosition);
+                m_Animator.SetTrigger("IsRunning");
             }
         }
     }
