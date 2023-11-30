@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class AIController : MonoBehaviour
 {
-    Animator m_Animator;
+    private Animator m_Animator;
     public NavMeshAgent navMeshAgent;               //  Nav mesh agent component
     public float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 2;                  //  Wait time when the enemy detect near the player without seeing
@@ -22,22 +22,23 @@ public class AIController : MonoBehaviour
 
 
     public Transform[] waypoints;                   //  All the waypoints where the enemy patrols
-    int m_CurrentWaypointIndex;                     //  Current waypoint where the enemy is going to
+    private int m_CurrentWaypointIndex;                     //  Current waypoint where the enemy is going to
 
-    Vector3 playerLastPosition = Vector3.zero;      //  Last position of the player when was near the enemy
-    Vector3 m_PlayerPosition;                       //  Last position of the player when the player is seen by the enemy
+    private Vector3 playerLastPosition = Vector3.zero;      //  Last position of the player when was near the enemy
+    private Vector3 m_PlayerPosition;                       //  Last position of the player when the player is seen by the enemy
 
-    float m_WaitTime;                               //  Variable of the wait time that makes the delay
-    float m_TimeToRotate;                           //  Variable of the wait time to rotate when the player is near that makes the delay
-    bool m_playerInRange;                           //  If the player is in range of vision, state of chasing
-    bool m_PlayerNear;                              //  If the player is near, state of hearing
-    bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
-    bool m_CaughtPlayer;                            //  if the enemy has caught the player
+    private float m_WaitTime;                               //  Variable of the wait time that makes the delay
+    private float m_TimeToRotate;                           //  Variable of the wait time to rotate when the player is near that makes the delay
+
+    private bool m_playerInRange;                           //  If the player is in range of vision, state of chasing
+    private bool m_PlayerNear;                              //  If the player is near, state of hearing
+    private bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
+    private bool m_CaughtPlayer;                            //  if the enemy has caught the player
 
     public bool IsStunned => m_stunTimer > 0f;
-    float m_stunTimer = 0f;
+    private float m_stunTimer = 0f;
 
-    void Start()
+    private void Start()
     {
         m_Animator = gameObject.GetComponent<Animator>();
         m_PlayerPosition = Vector3.zero;
@@ -70,7 +71,6 @@ public class AIController : MonoBehaviour
         if (!m_IsPatrol)
         {
             Chasing();
-            m_Animator.SetTrigger("IsRunning");
         }
         else
         {
@@ -81,14 +81,17 @@ public class AIController : MonoBehaviour
     public void DoStun(float duration)
     {
         Debug.Log($"Stunning enemy for {duration} seconds");
+        
+        // Stop the Enemy and play the stun animation
         Stop();
+        
+        // Set the stun timer, making it stunned in UPdate
         m_stunTimer = duration;
     }
 
     private void Stunned()
     {
         m_stunTimer -= Time.deltaTime;
-        m_Animator.SetTrigger("IsStunned");
         
         if (m_stunTimer <= 0f)
         {
@@ -130,7 +133,6 @@ public class AIController : MonoBehaviour
                     //  Wait if the current position is not the player position
                     Stop();
                 m_WaitTime -= Time.deltaTime;
-                m_Animator.SetTrigger("IsIdle");
             }
         }
     }
@@ -150,7 +152,6 @@ public class AIController : MonoBehaviour
                 //  The enemy wait for a moment and then go to the last player position
                 Stop();
                 m_TimeToRotate -= Time.deltaTime;
-                m_Animator.SetTrigger("IsIdle");
             }
         }
         else
@@ -171,7 +172,6 @@ public class AIController : MonoBehaviour
                 {
                     Stop();
                     m_WaitTime -= Time.deltaTime;
-                    m_Animator.SetTrigger("IsIdle");
                 }
             }
         }
@@ -188,25 +188,24 @@ public class AIController : MonoBehaviour
         navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
     }
 
-    void Stop()
+    private void Stop()
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.speed = 0;
-        m_Animator.SetTrigger("IsStunned");
     }
 
-    void Move(float speed)
+    private void Move(float speed)
     {
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speed;
     }
 
-    void CaughtPlayer()
+    private void CaughtPlayer()
     {
         m_CaughtPlayer = true;
     }
 
-    void LookingPlayer(Vector3 player)
+    private void LookingPlayer(Vector3 player)
     {
         navMeshAgent.SetDestination(player);
         if (Vector3.Distance(transform.position, player) <= 0.3)
@@ -227,7 +226,7 @@ public class AIController : MonoBehaviour
         }
     }
 
-    void EnviromentView()
+    private void EnviromentView()
     {
         Collider[] playerInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);   //  Make an overlap sphere around the enemy to detect the playermask in the view radius
 
@@ -269,7 +268,7 @@ public class AIController : MonoBehaviour
         }
     }
 
-    void PermaAgrro()
+    private void PermaAgrro()
     {
         if (KeyController.totalKeys == 1)
         {
@@ -279,7 +278,6 @@ public class AIController : MonoBehaviour
             {
                 Move(speedRun);
                 navMeshAgent.SetDestination(m_PlayerPosition);
-                m_Animator.SetTrigger("IsRunning");
             }
         }
     }

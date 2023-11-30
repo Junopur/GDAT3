@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class KeyController : MonoBehaviour
 {
-    AudioSource Pickup;
-    Collider Key;
+    private AudioSource Pickup;
+    private Collider Key;
 
     public static int totalKeys = 0;
 
@@ -14,7 +14,7 @@ public class KeyController : MonoBehaviour
         Pickup = GetComponent<AudioSource>();
         Key = GetComponent<Collider>();
     }
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Collision Detected");
         if (other.gameObject.CompareTag("Key"))
@@ -37,7 +37,7 @@ public class KeyController : MonoBehaviour
             }
         }
     }
-    void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Door"))
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    AudioSource Footsteps;
+    private AudioSource Footsteps;
 
     [Header("Movement")]
     public float moveSpeed;
@@ -14,16 +14,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
-    bool grounded;
+    private bool grounded;
 
     public Transform orientation;
 
-    float horizontalInput;
-    float verticalInput;
+    private float horizontalInput;
+    private float verticalInput;
 
-    Vector3 moveDirection;
+    private Vector3 moveDirection;
 
-    Rigidbody rb;
+    private Rigidbody rb;
 
     private void Start()
     {
