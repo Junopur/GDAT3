@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -24,6 +26,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection;
 
     private Rigidbody rb;
+    
+    private PlayerInputs playerInputs;
+
+    private void Awake()
+    {
+        playerInputs = new PlayerInputs();
+        playerInputs.Gameplay.Enable();
+    }
 
     private void Start()
     {
@@ -37,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         // ground check 
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
-        MyInput();
+        SetInputValues();
         SpeedControl();
 
         // handle drag
@@ -51,11 +61,13 @@ public class PlayerMovement : MonoBehaviour
     {
         MovePlayer();
     }
-
-    private void MyInput()
+    
+    private void SetInputValues()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        Vector2 inputVec = PlayerInputManager.Instance.GetMovementInput();
+
+        horizontalInput = inputVec.x;
+        verticalInput = inputVec.y;
     }
 
     private void MovePlayer()
@@ -70,12 +82,13 @@ public class PlayerMovement : MonoBehaviour
         {
             // start playing
         }
-        rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        rb.AddForce(moveDirection.normalized * (moveSpeed * 10f), ForceMode.Force);
     }
 
     private void SpeedControl()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        var velocity = rb.velocity;
+        Vector3 flatVel = new Vector3(velocity.x, 0f, velocity.z);
 
         // limit velocity if needed
         if(flatVel.magnitude > moveSpeed)

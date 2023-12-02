@@ -17,6 +17,7 @@ public class PlayerStun : MonoBehaviour
     private void Awake()
     {
         _camera = Camera.main;
+        PlayerInputManager.Instance.OnStunButtonPressed += OnStunButtonPressed;
     }
 
     private void Start()
@@ -28,23 +29,24 @@ public class PlayerStun : MonoBehaviour
     {
         if (CooldownTimer > 0)
             CooldownTimer -= Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (CooldownTimer > 0)
-            {
-                Debug.Log("Stun is on cooldown");
-            }
-            else
-            {
-                StunBlast();   
-            }
-        }
     }
 
     private void StartCooldown()
     {
         CooldownTimer = CooldownSeconds;
+    }
+    
+    // Runs when the inputmanager calls the stun button event
+    private void OnStunButtonPressed(object sender, EventArgs e)
+    {
+        if (CooldownTimer > 0)
+        {
+            Debug.Log("Stun is on cooldown");
+        }
+        else
+        {
+            StunBlast();   
+        }
     }
     
     /// <summary>
