@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,17 +10,41 @@ public class PlayerStun : MonoBehaviour
     [SerializeField] private LayerMask enemyLayerMask; // Layers to fire the ray on
     [SerializeField] private float stunDuration = 5f; // Time to stun for.
     private Camera _camera; // Initialized in awake because Camera.main is expensive
+    public const float CooldownSeconds = 10f;
+    
+    public float CooldownTimer { get; private set; } = 0f;
+
     private void Awake()
     {
         _camera = Camera.main;
     }
-    
+
+    private void Start()
+    {
+        CooldownTimer = 10f;
+    }
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if (CooldownTimer > 0)
+            CooldownTimer -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            StunBlast();
+            if (CooldownTimer > 0)
+            {
+                Debug.Log("Stun is on cooldown");
+            }
+            else
+            {
+                StunBlast();   
+            }
         }
+    }
+
+    private void StartCooldown()
+    {
+        CooldownTimer = CooldownSeconds;
     }
     
     /// <summary>
@@ -43,7 +68,8 @@ public class PlayerStun : MonoBehaviour
                 
                 var enemy = hit.transform.GetComponent<AIController>();
                 enemy.DoStun(stunDuration);
-
+                
+                StartCooldown(); // start stun cooldown
             }
             else
             {
