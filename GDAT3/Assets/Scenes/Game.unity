@@ -9069,7 +9069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1293757407
 Transform:
   m_ObjectHideFlags: 0
@@ -12626,6 +12626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67cdeea91a82d44f9faa9ec5373f971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 228493607}
   navMeshAgent: {fileID: 1684956707}
   startWaitTime: 4
   timeToRotate: 2
@@ -15218,9 +15219,9 @@ SceneRoots:
   - {fileID: 1293757407}
   - {fileID: 1195660699}
   - {fileID: 286645880}
+  - {fileID: 228493611}
   - {fileID: 1438321686}
   - {fileID: 1219401488}
-  - {fileID: 228493611}
   - {fileID: 1461313142}
   - {fileID: 1950333324}
   - {fileID: 1421449918}

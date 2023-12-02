@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class AIController : MonoBehaviour
 {
     private Animator m_Animator;
+    public GameObject player;                       //  Player gameobject
     public NavMeshAgent navMeshAgent;               //  Nav mesh agent component
     public float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 2;                  //  Wait time when the enemy detect near the player without seeing
@@ -34,6 +35,7 @@ public class AIController : MonoBehaviour
     private bool m_PlayerNear;                              //  If the player is near, state of hearing
     private bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
     private bool m_CaughtPlayer;                            //  if the enemy has caught the player
+    private bool IsPermaAggroed => KeyController.totalKeys >= 1;                          //  if the enemy is permanently aggroed
 
     public bool IsStunned => m_stunTimer > 0f;
     private float m_stunTimer = 0f;
@@ -65,17 +67,26 @@ public class AIController : MonoBehaviour
             Stunned();
             return;
         }
-        
-        EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
-        if (!m_IsPatrol)
+        if (IsPermaAggroed)
         {
+            m_PlayerPosition = player.transform.position;
             Chasing();
         }
         else
         {
-            Patroling();
+            EnviromentView(); // Check whether or not the player is in the enemy's field of vision
+            
+            if (!m_IsPatrol)
+            {
+                Chasing();
+            }
+            else
+            {
+                Patroling();
+            }
         }
+
     }
 
     public void DoStun(float duration)
@@ -264,20 +275,6 @@ public class AIController : MonoBehaviour
                  *  If the enemy no longer sees the player, then the enemy will go to the last position that has been registered
                  * */
                 m_PlayerPosition = player.transform.position;       //  Save the player's current position if the player is in range of vision
-            }
-        }
-    }
-
-    private void PermaAgrro()
-    {
-        if (KeyController.totalKeys == 1)
-        {
-            m_PlayerNear = false;
-            playerLastPosition = Vector3.zero;
-            if (!m_CaughtPlayer)
-            {
-                Move(speedRun);
-                navMeshAgent.SetDestination(m_PlayerPosition);
             }
         }
     }

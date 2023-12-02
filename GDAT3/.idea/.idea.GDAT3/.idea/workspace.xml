@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2892c660-e3d6-4386-b86e-9a275db62113" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerStun.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerStun.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/CastleDoctrineScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MurderScript.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MurderScript.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +20,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/aab30418df1b4ed1a1589cbce38de3821fe00/c3/66c8aabf/Physics.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../Unity/CookingGame/Assets/Scripts/Interface/Screen/GamePlayingClockUI.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -92,7 +96,7 @@
       <option name="presentableId" value="Default" />
       <updated>1701353917311</updated>
       <workItem from="1701353918461" duration="935000" />
-      <workItem from="1701540767665" duration="568000" />
+      <workItem from="1701540767665" duration="1069000" />
     </task>
     <servers />
   </component>
