@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 
 public class PlayerStun : MonoBehaviour
 {
+    [SerializeField] private GameObject stunBlastPrefab; // The stun blast prefab
     [SerializeField] private LayerMask enemyLayerMask; // Layers to fire the ray on
     [SerializeField] private float stunDuration = 5f; // Time to stun for.
     private Camera _camera; // Initialized in awake because Camera.main is expensive
@@ -63,6 +64,10 @@ public class PlayerStun : MonoBehaviour
         {
             Debug.DrawLine(ray.origin, hit.point, Color.green, 10, false);
             Debug.Log($"Hit: {hit.transform.name}");
+            
+            // Spawn the stun blast
+            var stunBlast = Instantiate(stunBlastPrefab, hit.point, Quaternion.identity);
+            Destroy(stunBlast, 3f);
             
             if (hit.transform.CompareTag("Enemy"))
             {

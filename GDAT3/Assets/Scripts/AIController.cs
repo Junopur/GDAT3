@@ -31,6 +31,9 @@ public class AIController : MonoBehaviour
     private float m_WaitTime;                               //  Variable of the wait time that makes the delay
     private float m_TimeToRotate;                           //  Variable of the wait time to rotate when the player is near that makes the delay
 
+    private GameObject m_StunEffect;
+    public GameObject stunEffectPrefab;
+
     private bool m_playerInRange;                           //  If the player is in range of vision, state of chasing
     private bool m_PlayerNear;                              //  If the player is near, state of hearing
     private bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
@@ -96,8 +99,14 @@ public class AIController : MonoBehaviour
         // Stop the Enemy and play the stun animation
         Stop();
         
-        // Set the stun timer, making it stunned in UPdate
+        // Set the stun timer, making it stunned in Update
         m_stunTimer = duration;
+        
+        // Spawn the stunned effect
+        if (stunEffectPrefab != null)
+        {
+            m_StunEffect = Instantiate(stunEffectPrefab, transform.position, Quaternion.identity, transform);
+        }
     }
 
     private void Stunned()
@@ -106,6 +115,11 @@ public class AIController : MonoBehaviour
         
         if (m_stunTimer <= 0f)
         {
+            if (m_StunEffect != null)
+            {
+                Destroy(m_StunEffect, 0.5f);
+            }
+            
             Debug.Log("Stun ended");
             m_IsPatrol = true;
             m_CaughtPlayer = false;
