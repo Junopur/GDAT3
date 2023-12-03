@@ -17,12 +17,12 @@ public class PlayerStun : MonoBehaviour
     private void Awake()
     {
         _camera = Camera.main;
-        PlayerInputManager.Instance.OnStunButtonPressed += OnStunButtonPressed;
     }
 
     private void Start()
     {
         CooldownTimer = 10f;
+        PlayerInputManager.Instance.OnStunButtonPressed += OnStunButtonPressed;
     }
 
     private void Update()
