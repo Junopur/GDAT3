@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class KeyController : MonoBehaviour
@@ -8,6 +9,8 @@ public class KeyController : MonoBehaviour
     private Collider Key;
 
     public static int totalKeys = 0;
+
+    [SerializeField] TextMeshProUGUI Objective;
 
     private void Awake()
     {
@@ -22,6 +25,7 @@ public class KeyController : MonoBehaviour
             Debug.Log("Object is Key");
             totalKeys += 1;
             Destroy(other.gameObject);
+            Objective.text = "Escape";
         }
 
         if (other.gameObject.CompareTag("Door"))
