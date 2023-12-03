@@ -10,13 +10,14 @@ public class PlayerInputManager : MonoBehaviour
 
     private PlayerInputs _playerInputs;
 
+    public event EventHandler OnFlashlightButtonPressed;
     public event EventHandler OnStunButtonPressed;
 
     private void Awake()
     {
         if (Instance != null)
         {
-            Debug.LogWarning("Multiple instances of PlayerInputManager found. Deleting this one.");
+            Debug.LogWarning($"Multiple instances of PlayerInputManager found. Deleting this one ({transform.name}).");
             Destroy(this.gameObject);
             return;
         }
@@ -27,7 +28,9 @@ public class PlayerInputManager : MonoBehaviour
         _playerInputs.Gameplay.Enable();
         
         _playerInputs.Gameplay.StunButton.performed += StunButtonPressed;
+        _playerInputs.Gameplay.ToggleFlashlight.performed += ToggleFlashlightOnPerformed;
     }
+    private void ToggleFlashlightOnPerformed(InputAction.CallbackContext obj) => OnFlashlightButtonPressed?.Invoke(this, EventArgs.Empty);
     private void StunButtonPressed(InputAction.CallbackContext obj) => OnStunButtonPressed?.Invoke(this, EventArgs.Empty);
     
 

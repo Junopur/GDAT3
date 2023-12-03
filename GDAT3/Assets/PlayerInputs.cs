@@ -44,6 +44,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle Flashlight"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd207d27-6a4a-4a55-ad29-0cb8fe3fbf98"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +143,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Stun Button"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3fcc6e4f-007f-41fa-bbb4-c14cd225ab96"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Flashlight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""007028ce-83ac-4c40-b27c-effd3083d5a7"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Flashlight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -150,6 +181,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_StunButton = m_Gameplay.FindAction("Stun Button", throwIfNotFound: true);
+        m_Gameplay_ToggleFlashlight = m_Gameplay.FindAction("Toggle Flashlight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -213,12 +245,14 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_StunButton;
+    private readonly InputAction m_Gameplay_ToggleFlashlight;
     public struct GameplayActions
     {
         private @PlayerInputs m_Wrapper;
         public GameplayActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @StunButton => m_Wrapper.m_Gameplay_StunButton;
+        public InputAction @ToggleFlashlight => m_Wrapper.m_Gameplay_ToggleFlashlight;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -234,6 +268,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @StunButton.started += instance.OnStunButton;
             @StunButton.performed += instance.OnStunButton;
             @StunButton.canceled += instance.OnStunButton;
+            @ToggleFlashlight.started += instance.OnToggleFlashlight;
+            @ToggleFlashlight.performed += instance.OnToggleFlashlight;
+            @ToggleFlashlight.canceled += instance.OnToggleFlashlight;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -244,6 +281,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @StunButton.started -= instance.OnStunButton;
             @StunButton.performed -= instance.OnStunButton;
             @StunButton.canceled -= instance.OnStunButton;
+            @ToggleFlashlight.started -= instance.OnToggleFlashlight;
+            @ToggleFlashlight.performed -= instance.OnToggleFlashlight;
+            @ToggleFlashlight.canceled -= instance.OnToggleFlashlight;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -274,5 +314,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnStunButton(InputAction.CallbackContext context);
+        void OnToggleFlashlight(InputAction.CallbackContext context);
     }
 }
