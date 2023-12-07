@@ -98,6 +98,10 @@ public class AIController : MonoBehaviour
         
         // Stop the Enemy and play the stun animation
         Stop();
+        m_Animator.SetTrigger("IsStunned");
+        m_Animator.ResetTrigger("IsWalking");
+        m_Animator.ResetTrigger("IsRunning");
+        m_Animator.ResetTrigger("IsIdle");
         
         // Set the stun timer, making it stunned in Update
         m_stunTimer = duration;
@@ -112,20 +116,26 @@ public class AIController : MonoBehaviour
     private void Stunned()
     {
         m_stunTimer -= Time.deltaTime;
-        
+
         if (m_stunTimer <= 0f)
         {
             if (m_StunEffect != null)
             {
                 Destroy(m_StunEffect, 0.5f);
             }
-            
+            m_Animator.SetTrigger("IsStunned");
+            m_Animator.ResetTrigger("IsRunning");
+            m_Animator.ResetTrigger("IsWalking");
+            m_Animator.ResetTrigger("IsIdle");
+
             Debug.Log("Stun ended");
             m_IsPatrol = true;
             m_CaughtPlayer = false;
             m_playerInRange = false;
             m_PlayerNear = false;
             Move(speedWalk);
+            m_Animator.SetTrigger("IsWalking");
+            m_Animator.ResetTrigger("IsStunned");
         }
     }
 
@@ -139,6 +149,8 @@ public class AIController : MonoBehaviour
         {
             Move(speedRun);
             navMeshAgent.SetDestination(m_PlayerPosition);          //  set the destination of the enemy to the player location
+            m_Animator.SetTrigger("IsRunning");
+            m_Animator.ResetTrigger("IsWalking");
         }
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
@@ -148,6 +160,7 @@ public class AIController : MonoBehaviour
                 m_IsPatrol = true;
                 m_PlayerNear = false;
                 Move(speedWalk);
+                m_Animator.SetTrigger("IsWalking");
                 m_TimeToRotate = timeToRotate;
                 m_WaitTime = startWaitTime;
                 navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
@@ -158,6 +171,7 @@ public class AIController : MonoBehaviour
                     //  Wait if the current position is not the player position
                     Stop();
                 m_WaitTime -= Time.deltaTime;
+                m_Animator.SetTrigger("IsIdle");
             }
         }
     }
@@ -171,12 +185,14 @@ public class AIController : MonoBehaviour
             {
                 Move(speedWalk);
                 LookingPlayer(playerLastPosition);
+                m_Animator.SetTrigger("IsWalking");
             }
             else
             {
                 //  The enemy wait for a moment and then go to the last player position
                 Stop();
                 m_TimeToRotate -= Time.deltaTime;
+                m_Animator.SetTrigger("IsIdle");
             }
         }
         else
@@ -192,11 +208,13 @@ public class AIController : MonoBehaviour
                     NextPoint();
                     Move(speedWalk);
                     m_WaitTime = startWaitTime;
+                    m_Animator.SetTrigger("IsWalking");
                 }
                 else
                 {
                     Stop();
                     m_WaitTime -= Time.deltaTime;
+                    m_Animator.SetTrigger("IsIdle");
                 }
             }
         }
@@ -217,12 +235,17 @@ public class AIController : MonoBehaviour
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.speed = 0;
+        m_Animator.ResetTrigger("IsWalking");
+        m_Animator.ResetTrigger("IsRunning");
+        m_Animator.SetTrigger("IsIdle");
     }
 
     private void Move(float speed)
     {
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speed;
+        m_Animator.ResetTrigger("IsIdle");
+        m_Animator.SetTrigger("IsWalking");
     }
 
     private void CaughtPlayer()
@@ -242,11 +265,16 @@ public class AIController : MonoBehaviour
                 navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
                 m_WaitTime = startWaitTime;
                 m_TimeToRotate = timeToRotate;
+                m_Animator.SetTrigger("IsWalking");
+                m_Animator.ResetTrigger("IsIdle");
             }
             else
             {
                 Stop();
                 m_WaitTime -= Time.deltaTime;
+                m_Animator.SetTrigger("IsIdle");
+                m_Animator.ResetTrigger("IsWalking");
+                m_Animator.ResetTrigger("IsRunning");
             }
         }
     }
@@ -266,6 +294,8 @@ public class AIController : MonoBehaviour
                 {
                     m_playerInRange = true;             //  The player has been seeing by the enemy and then the nemy starts to chasing the player
                     m_IsPatrol = false;                 //  Change the state to chasing the player
+                    m_Animator.SetTrigger("IsRunning");
+                    m_Animator.ResetTrigger("IsWalking");
                 }
                 else
                 {
@@ -273,6 +303,8 @@ public class AIController : MonoBehaviour
                      *  If the player is behind a obstacle the player position will not be registered
                      * */
                     m_playerInRange = false;
+                    m_Animator.SetTrigger("IsWalking");                         
+                    m_Animator.ResetTrigger("IsRunning");
                 }
             }
             if (Vector3.Distance(transform.position, player.position) > viewRadius)
@@ -281,7 +313,8 @@ public class AIController : MonoBehaviour
                  *  If the player is further than the view radius, then the enemy will no longer keep the player's current position.
                  *  Or the enemy is a safe zone, the enemy will no chase
                  * */
-                m_playerInRange = false;                //  Change the sate of chasing
+                m_playerInRange = false;                //  Change the state of chasing
+                m_Animator.SetTrigger("IsWalking");
             }
             if (m_playerInRange)
             {
